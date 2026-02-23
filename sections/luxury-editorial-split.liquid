@@ -1,0 +1,422 @@
+{% assign sid = 'lx-editorial-' | append: section.id %}
+
+{{ 'luxury-editorial-split.css' | asset_url | stylesheet_tag }}
+{{ 'luxury-editorial-split.js' | asset_url | script_tag }}
+
+<section
+  id="{{ sid }}"
+  class="lx-editorial"
+  data-section-id="{{ section.id }}"
+  data-anim="{{ section.settings.enable_animation }}"
+  data-anim-style="{{ section.settings.animation_style }}"
+  data-height-mode="{{ section.settings.height_mode }}"
+  data-mobile-order="{{ section.settings.mobile_order }}"
+  data-split="{{ section.settings.split_ratio }}"
+  style="
+
+    
+    --lx-height-desktop: {{ section.settings.height_desktop }}px;
+    --lx-height-mobile: {{ section.settings.height_mobile }}px;
+    --lx-maxw: {{ section.settings.max_width }}px;
+    --lx-side-pad: {{ section.settings.side_padding }}px;
+
+    --lx-pad-top: {{ section.settings.padding_top }}px;
+    --lx-pad-bot: {{ section.settings.padding_bottom }}px;
+
+    --lx-gap-desktop: {{ section.settings.column_gap_desktop }}px;
+    --lx-gap-mobile: {{ section.settings.column_gap_mobile }}px;
+
+
+    --lx-split: {{ section.settings.split_ratio }};
+    --lx-panel-v-align: {{ section.settings.content_vertical }};
+    --lx-panel-align: {{ section.settings.text_align }};
+
+    --lx-kicker-size-desktop: {{ section.settings.kicker_size_desktop }}px;
+    --lx-kicker-size-mobile: {{ section.settings.kicker_size_mobile }}px;
+
+    --lx-heading-size-desktop: {{ section.settings.heading_size_desktop }}px;
+    --lx-heading-size-mobile: {{ section.settings.heading_size_mobile }}px;
+
+    --lx-body-size-desktop: {{ section.settings.body_size_desktop }}px;
+    --lx-body-size-mobile: {{ section.settings.body_size_mobile }}px;
+
+    --lx-kicker-ls: {{ section.settings.kicker_letter_spacing }}px;
+    --lx-heading-ls: {{ section.settings.heading_letter_spacing }}px;
+
+    --lx-kicker-transform: {{ section.settings.kicker_transform }};
+    --lx-heading-transform: {{ section.settings.heading_transform }};
+
+    --lx-space-kicker: {{ section.settings.space_after_kicker }}px;
+    --lx-space-heading: {{ section.settings.space_after_heading }}px;
+    --lx-space-body: {{ section.settings.space_after_body }}px;
+
+    --lx-text: {{ section.settings.text_color }};
+    --lx-heading-color: {{ section.settings.heading_color }};
+    --lx-muted: {{ section.settings.body_color }};
+
+    --lx-panel-bg: {{ section.settings.panel_bg_color }};
+    --lx-panel-overlay: {{ section.settings.panel_overlay_color }};
+    --lx-panel-overlay-opacity: {{ section.settings.panel_overlay_opacity | divided_by: 100.0 }};
+
+    --lx-media-radius-desktop: {{ section.settings.media_radius_desktop }}px;
+    --lx-media-radius-mobile: {{ section.settings.media_radius_mobile }}px;
+
+    --lx-media-overlay: {{ section.settings.media_overlay_color }};
+    --lx-media-overlay-opacity: {{ section.settings.media_overlay_opacity | divided_by: 100.0 }};
+    --lx-media-pos: {{ section.settings.media_position }};
+
+    --lx-btn-bg: {{ section.settings.btn_bg }};
+    --lx-btn-text: {{ section.settings.btn_text }};
+    --lx-btn-border: {{ section.settings.btn_border }};
+    --lx-btn-bw: {{ section.settings.btn_border_width }}px;
+    --lx-btn-radius: {{ section.settings.btn_radius }}px;
+    --lx-btn-py: {{ section.settings.btn_py }}px;
+    --lx-btn-px: {{ section.settings.btn_px }}px;
+    --lx-panel-inner-maxw: {{ section.settings.panel_inner_max_width }}px;
+  "
+>
+  {% assign reverse = false %}
+  {% if section.settings.image_side == 'left' %}
+    {% assign reverse = true %}
+  {% endif %}
+
+  <div class="lx-editorial__wrap {% if reverse %}is-reverse{% endif %}">
+    {%- comment -%} CONTENT PANEL {%- endcomment -%}
+    <div
+      class="lx-editorial__panel"
+      data-panel-mode="{{ section.settings.panel_background_mode }}"
+      style="
+        {% if section.settings.panel_background_mode == 'image' %}
+          {% if section.settings.panel_bg_image_desktop %}
+            --lx-panel-bg-img-desktop: url('{{ section.settings.panel_bg_image_desktop | image_url: width: 2400 }}');
+          {% endif %}
+          {% if section.settings.panel_bg_image_mobile %}
+            --lx-panel-bg-img-mobile: url('{{ section.settings.panel_bg_image_mobile | image_url: width: 1400 }}');
+          {% endif %}
+        {% endif %}
+      "
+    >
+      <div class="lx-editorial__panel-inner">
+        {% if section.settings.kicker != blank %}
+          <div class="lx-editorial__kicker">{{ section.settings.kicker }}</div>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2 class="lx-editorial__heading">{{ section.settings.heading }}</h2>
+        {% endif %}
+
+        {% if section.settings.body != blank %}
+          <div class="lx-editorial__body rte">{{ section.settings.body }}</div>
+        {% endif %}
+
+        {% if section.settings.button_label != blank %}
+          <div class="lx-editorial__actions">
+            <a class="lx-editorial__btn" href="{{ section.settings.button_link }}">
+              {{ section.settings.button_label }}
+            </a>
+
+            {% if section.settings.button_2_label != blank %}
+              <a class="lx-editorial__btn lx-editorial__btn--secondary" href="{{ section.settings.button_2_link }}">
+                {{ section.settings.button_2_label }}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="lx-editorial__panel-overlay" aria-hidden="true"></div>
+    </div>
+
+    {%- comment -%} MEDIA PANEL {%- endcomment -%}
+    <div class="lx-editorial__media">
+      <div class="lx-editorial__media-inner">
+        {% if section.settings.image_desktop %}
+          <img
+            class="lx-editorial__img lx-editorial__img--desktop"
+            src="{{ section.settings.image_desktop | image_url: width: 2400 }}"
+            alt="{{ section.settings.heading | escape }}"
+            loading="lazy"
+          >
+        {% endif %}
+
+        {% if section.settings.image_mobile %}
+          <img
+            class="lx-editorial__img lx-editorial__img--mobile"
+            src="{{ section.settings.image_mobile | image_url: width: 1400 }}"
+            alt="{{ section.settings.heading | escape }}"
+            loading="lazy"
+          >
+        {% endif %}
+
+        <div class="lx-editorial__media-overlay" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Luxury Editorial Split",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 980, "max": 1800, "step": 20, "default": 1600 },
+
+    {
+  "type": "header",
+  "content": "Height Control"
+},
+{
+  "type": "select",
+  "id": "height_mode",
+  "label": "Section height mode",
+  "default": "auto",
+  "options": [
+    { "value": "auto", "label": "Auto (responsive)" },
+    { "value": "custom", "label": "Custom height (px)" },
+    { "value": "fullscreen", "label": "Full screen (100vh)" }
+  ]
+},
+{
+  "type": "range",
+  "id": "height_desktop",
+  "label": "Desktop height (px)",
+  "min": 300,
+  "max": 900,
+  "step": 10,
+  "default": 520
+},
+{
+  "type": "range",
+  "id": "height_mobile",
+  "label": "Mobile height (px)",
+  "min": 220,
+  "max": 800,
+  "step": 10,
+  "default": 380
+},
+
+    {
+      "type": "range",
+      "id": "panel_inner_max_width",
+      "label": "Content max width (px)",
+      "min": 400,
+      "max": 900,
+      "step": 10,
+      "default": 560
+    },
+
+    { "type": "range", "id": "side_padding", "label": "Side padding (px)", "min": 0, "max": 80, "step": 2, "default": 20 },
+    { "type": "range", "id": "padding_top", "label": "Padding top (px)", "min": 0, "max": 160, "step": 4, "default": 0 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom (px)", "min": 0, "max": 160, "step": 4, "default": 0 },
+    { "type": "header", "content": "Spacing (Section)" },
+
+    { "type": "range", "id": "margin_top", "label": "Margin top (px)", "min": 0, "max": 160, "step": 4, "default": 0 },
+    { "type": "range", "id": "margin_bottom", "label": "Margin bottom (px)", "min": 0, "max": 160, "step": 4, "default": 0 },
+
+    {
+  "type": "range",
+  "id": "column_gap_desktop",
+  "label": "Column gap (Desktop px)",
+  "min": 0,
+  "max": 80,
+  "step": 2,
+  "default": 0
+},
+{
+  "type": "range",
+  "id": "column_gap_mobile",
+  "label": "Column gap (Mobile px)",
+  "min": 0,
+  "max": 60,
+  "step": 2,
+  "default": 16
+},
+
+    {
+      "type": "select",
+      "id": "split_ratio",
+      "label": "Column ratio",
+      "default": "50/50",
+      "options": [
+        { "value": "50/50", "label": "50 / 50" },
+        { "value": "55/45", "label": "55 / 45 (content wider)" },
+        { "value": "45/55", "label": "45 / 55 (image wider)" },
+        { "value": "60/40", "label": "60 / 40 (content wider)" },
+        { "value": "40/60", "label": "40 / 60 (image wider)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_side",
+      "label": "Image side",
+      "default": "right",
+      "options": [
+        { "value": "right", "label": "Right" },
+        { "value": "left", "label": "Left" }
+      ]
+    },
+
+    {
+  "type": "select",
+  "id": "mobile_order",
+  "label": "Mobile layout order",
+  "default": "content-first",
+  "options": [
+    { "value": "content-first", "label": "Content first (Panel on top)" },
+    { "value": "image-first", "label": "Image first (Image on top)" }
+  ]
+},
+
+
+    {
+      "type": "select",
+      "id": "content_vertical",
+      "label": "Content vertical alignment",
+      "default": "center",
+      "options": [
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Bottom" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "kicker", "label": "Kicker (small top text)", "default": "\"THE OSCARS OF THE INTERIOR DESIGN WORLD\"" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "THE OSCARS OF THE INTERIOR DESIGN WORLD" },
+    { "type": "richtext", "id": "body", "label": "Body text", "default": "<p>The Andrew Martin Interior Designer of the Year Award celebrates the best of design from around the world.</p><p>Designers from all six continents take part. Every year, a panel of celebrity judges are charged with the fiendish task of selecting the overall winner.</p>" },
+
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Explore Our Design Awards" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+
+    { "type": "text", "id": "button_2_label", "label": "Secondary button label (optional)", "default": "Button-Two" },
+    { "type": "url", "id": "button_2_link", "label": "Secondary button link" },
+
+    { "type": "header", "content": "Typography (Pixel Controls)" },
+
+    { "type": "range", "id": "kicker_size_desktop", "label": "Kicker size - Desktop (px)", "min": 10, "max": 28, "step": 1, "default": 12 },
+    { "type": "range", "id": "kicker_size_mobile", "label": "Kicker size - Mobile (px)", "min": 10, "max": 24, "step": 1, "default": 11 },
+
+    { "type": "range", "id": "heading_size_desktop", "label": "Heading size - Desktop (px)", "min": 18, "max": 80, "step": 1, "default": 32 },
+    { "type": "range", "id": "heading_size_mobile", "label": "Heading size - Mobile (px)", "min": 18, "max": 48, "step": 1, "default": 24 },
+
+    { "type": "range", "id": "body_size_desktop", "label": "Body size - Desktop (px)", "min": 12, "max": 24, "step": 1, "default": 14 },
+    { "type": "range", "id": "body_size_mobile", "label": "Body size - Mobile (px)", "min": 12, "max": 22, "step": 1, "default": 13 },
+    
+    { "type": "range", "id": "kicker_letter_spacing", "label": "Kicker letter spacing (px)", "min": 0, "max": 6, "step": 0.5, "default": 0.5 },
+    { "type": "range", "id": "heading_letter_spacing", "label": "Heading letter spacing (px)", "min": 0, "max": 8, "step": 0.5, "default": 0.5 },
+
+    {
+      "type": "select",
+      "id": "kicker_transform",
+      "label": "Kicker transform",
+      "default": "uppercase",
+      "options": [
+        { "value": "none", "label": "Normal" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "capitalize", "label": "Capitalize" },
+        { "value": "lowercase", "label": "lowercase" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_transform",
+      "label": "Heading transform",
+      "default": "uppercase",
+      "options": [
+        { "value": "none", "label": "Normal" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "capitalize", "label": "Capitalize" },
+        { "value": "lowercase", "label": "lowercase" }
+      ]
+    },
+
+    { "type": "header", "content": "Spacing Between Text" },
+    { "type": "range", "id": "space_after_kicker", "label": "Space after kicker (px)", "min": 0, "max": 40, "step": 1, "default": 10 },
+    { "type": "range", "id": "space_after_heading", "label": "Space after heading (px)", "min": 0, "max": 50, "step": 1, "default": 12 },
+    { "type": "range", "id": "space_after_body", "label": "Space after body (px)", "min": 0, "max": 60, "step": 1, "default": 12 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "text_color", "label": "Panel text color", "default": "#FFFFFF" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#FFFFFF" },
+    { "type": "color", "id": "body_color", "label": "Body color", "default": "rgba(255,255,255,0.8)" },
+
+    { "type": "header", "content": "Left Panel Background" },
+    {
+      "type": "select",
+      "id": "panel_background_mode",
+      "label": "Panel background mode",
+      "default": "solid",
+      "options": [
+        { "value": "solid", "label": "Solid color" },
+        { "value": "image", "label": "Background image" }
+      ]
+    },
+    { "type": "color", "id": "panel_bg_color", "label": "Panel background color", "default": "#2f2f2f" },
+    { "type": "image_picker", "id": "panel_bg_image_desktop", "label": "Panel background image (Desktop)" },
+    { "type": "image_picker", "id": "panel_bg_image_mobile", "label": "Panel background image (Mobile)" },
+    { "type": "color", "id": "panel_overlay_color", "label": "Panel overlay color (for image mode)", "default": "#000000" },
+    { "type": "range", "id": "panel_overlay_opacity", "label": "Panel overlay opacity (%)", "min": 0, "max": 90, "step": 5, "default": 35 },
+
+    { "type": "header", "content": "Right Image" },
+    { "type": "image_picker", "id": "image_desktop", "label": "Image (Desktop)" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Image (Mobile)" },
+    {
+      "type": "select",
+      "id": "media_position",
+      "label": "Image focal position",
+      "default": "center center",
+      "options": [
+        { "value": "center center", "label": "Center" },
+        { "value": "top center", "label": "Top" },
+        { "value": "bottom center", "label": "Bottom" },
+        { "value": "left center", "label": "Left" },
+        { "value": "right center", "label": "Right" }
+      ]
+    },
+
+
+    { "type": "range", "id": "media_radius_desktop", "label": "Image corner radius (Desktop px)", "min": 0, "max": 60, "step": 1, "default": 0},
+    { "type": "range", "id": "media_radius_mobile", "label": "Image corner radius (Mobile px)", "min": 0, "max": 60, "step": 1, "default": 18},
+
+
+    
+    { "type": "color", "id": "media_overlay_color", "label": "Image overlay color (optional)", "default": "#000000" },
+    { "type": "range", "id": "media_overlay_opacity", "label": "Image overlay opacity (%)", "min": 0, "max": 70, "step": 5, "default": 0 },
+
+    { "type": "header", "content": "Button Style" },
+    { "type": "color", "id": "btn_bg", "label": "Button background", "default": "rgba(255,255,255,0.06)" },
+    { "type": "color", "id": "btn_text", "label": "Button text", "default": "#FFFFFF" },
+    { "type": "color", "id": "btn_border", "label": "Button border", "default": "rgba(255,255,255,0.55)" },
+    { "type": "range", "id": "btn_border_width", "label": "Border width (px)", "min": 0, "max": 6, "step": 1, "default": 1 },
+    { "type": "range", "id": "btn_radius", "label": "Radius (px)", "min": 0, "max": 60, "step": 1, "default": 4 },
+    { "type": "range", "id": "btn_py", "label": "Padding Y (px)", "min": 8, "max": 26, "step": 1, "default": 10 },
+    { "type": "range", "id": "btn_px", "label": "Padding X (px)", "min": 10, "max": 40, "step": 1, "default": 14 },
+
+    { "type": "header", "content": "Animation" },
+    { "type": "checkbox", "id": "enable_animation", "label": "Enable reveal animation", "default": true },
+    {
+      "type": "select",
+      "id": "animation_style",
+      "label": "Animation style",
+      "default": "fade-up",
+      "options": [
+        { "value": "fade-up", "label": "Fade up" },
+        { "value": "fade-in", "label": "Fade in" },
+        { "value": "slide-in", "label": "Slide in" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Luxury Editorial Split" }]
+}
+{% endschema %}
