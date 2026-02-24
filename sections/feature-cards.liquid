@@ -1,0 +1,66 @@
+<section class="feature-cards">
+
+<div class="page-width">
+
+    {% for block in section.blocks %}
+        
+        <div class="feature-card" {{ block.shopify_attributes }} >
+            <h3>
+                {{ block.settings.title }}
+            </h3>
+            <p>
+                {{ block.settings.text }}
+            </p>
+        </div>
+
+
+    {% endfor %}
+
+</div>
+
+
+</section>
+
+
+{% schema %}
+    {
+        "name": "Feature-Card-Section",
+        "settings": [],
+        "blocks": [
+            {
+                "type": "card",
+                "name": "Card",
+                "settings": [
+                    {
+                        "type": "text",
+                        "id": "title",
+                        "label": "Your Title Here",
+                        "default": "This is Title"
+                    },
+                    {
+                        "type": "textarea",
+                        "id": "text",
+                        "label": "Your Text Here",
+                        "default": "This Is Your Text"
+                    }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Feature-Card-Section",
+                "blocks": [
+                    {
+                        "type": "card"
+                    },
+                    {
+                        "type": "card"
+                    },
+                    {
+                        "type": "card"
+                    }
+                ]
+            }
+        ]
+    }
+{% endschema %}
